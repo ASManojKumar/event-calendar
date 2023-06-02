@@ -1,0 +1,93 @@
+<div class="container calendar-container">
+  <div class="title-section">
+    <span class="calendar-heading">
+      My calendar
+    </span>
+    <div class="btn-container">
+      <button class="btn btn-primary" (click)="openModal(createmodal,'save')">New</button>
+    </div>
+  </div>
+  <div class="calendar-section">
+    <div class="month-year-section text-center">
+      <i class="arrow left cursor-pointer" (click)="decreaseMonth()"></i>
+      {{displayMonth}} {{displayYear}}
+      <i class="arrow right cursor-pointer" (click)="increaseMonth()"></i>
+    </div>
+    <table class="calendar-table" *ngIf="calendar">
+      <thead class="text-center">
+        <tr>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+          <th>Sunday</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of calendar | chunk: 7; let i = index">
+          <td class="calendar-day" *ngFor="let c of row; let j = index">
+            <div class="calendar-day-header">
+              <strong class="primary-text" *ngIf="(i==0 && j==0) || (c.date.getDate() == 1)">
+                {{monthNames[c.date.getMonth()]}}
+              </strong>
+              <strong>{{c.date.getDate()}}</strong>
+              <ng-container *ngIf="c.events.length">
+                <div class="event-title-section" *ngFor="let event of c.events"
+                  (click)="openModal(createmodal, 'edit', event)">
+                  <span class="event-title">{{event.title}}</span>
+                </div>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<router-outlet></router-outlet>
+
+<ng-template #createmodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{isEdit ? 'Update Event' : 'Create Event'}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="selectDate">Enter Title</label>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Enter title" name="title" [(ngModel)]="eventTitle" />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="selectDate">Select Date</label>
+        <div class="input-group">
+          <input id="selectDate" class="form-control" placeholder="yyyy-mm-dd" name="dp" type="date"
+            [(ngModel)]="eventDate" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="isEdit" type="button" class="btn btn-outline-primary" (click)="deleteEvent(deleteModal)"
+      [disabled]="!eventTitle || !eventDate">Delete</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')"
+      [disabled]="!eventTitle || !eventDate">{{isEdit ? 'Update' : 'Save'}}</button>
+  </div>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-delete-event">Delete Event</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div>Are you sure you want to delete the event?</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">Delete</button>
+  </div>
+</ng-template>
