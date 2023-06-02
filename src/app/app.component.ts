@@ -30,14 +30,15 @@ export class AppComponent implements OnInit {
   public displayMonth: string;
   private monthIndex: number = 0;
   public displayYear: number;
-  public closeResult = '';
   public eventTitle: string;
   public eventDate: any;
   private calendarEventList: any = [];
   public isEdit: boolean;
   private deleteEventId: string;
+  public minDate: string;
 
   constructor(private modalService: NgbModal) {
+    this.minDate = new Date().toISOString().split('T')[0];
     // fetch data from localstorage
     if (window.localStorage.getItem('eventData'))
       this.calendarEventList = JSON.parse(window.localStorage.getItem('eventData'))
@@ -149,8 +150,7 @@ export class AppComponent implements OnInit {
       }
     }
     // save data to localstorage
-    if (this.calendarEventList.length)
-      window.localStorage.setItem('eventData', JSON.stringify(this.calendarEventList));
+    window.localStorage.setItem('eventData', JSON.stringify(this.calendarEventList));
   }
 
   deleteEvent(content) {

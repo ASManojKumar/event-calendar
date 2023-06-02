@@ -65,7 +65,7 @@
         <label for="selectDate">Select Date</label>
         <div class="input-group">
           <input id="selectDate" class="form-control" placeholder="yyyy-mm-dd" name="dp" type="date"
-            [(ngModel)]="eventDate" />
+            [(ngModel)]="eventDate" [min]="minDate" />
         </div>
       </div>
     </form>
