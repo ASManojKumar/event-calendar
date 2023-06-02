@@ -28,7 +28,7 @@
       <tbody>
         <tr *ngFor="let row of calendar | chunk: 7; let i = index">
           <td class="calendar-day" *ngFor="let c of row; let j = index">
-            <div class="calendar-day-header">
+            <div class="calendar-day-header" [ngClass]="{today: c.isToday}">
               <strong class="primary-text" *ngIf="(i==0 && j==0) || (c.date.getDate() == 1)">
                 {{monthNames[c.date.getMonth()]}}
               </strong>

@@ -59,6 +59,11 @@
     .calendar-day {
       height: 12vh;
       max-height: 12vh;
+      .calendar-day-header {
+        &.today {
+          color: #dd296f;
+        }
+      }
       .event-title-section {
         background: #dd296f;
         color: #ffffff;
